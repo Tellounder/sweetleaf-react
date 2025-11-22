@@ -33,20 +33,18 @@ export function CheckoutModal({ open, onClose }: Props) {
   }, [countdown, purchased]);
 
   const handleBuy = () => {
-    const summary =
-      items.length === 0
-        ? "Sin productos en el carrito."
-        : items
-            .map(
-              (i) =>
-                `${i.name} x${i.qty} ($${new Intl.NumberFormat("es-AR").format(
-                  i.price * i.qty
-                )})`
-            )
-            .join(" | ");
-    const text = `Pedido Sweet Leaf:%0A${summary}%0ATotal estimado: $${new Intl.NumberFormat(
+    if (!items.length) return;
+    const summary = items
+      .map(
+        (i) =>
+          `${i.name} x${i.qty} ($${new Intl.NumberFormat("es-AR").format(
+            i.price * i.qty
+          )})`
+      )
+      .join(" | ");
+    const text = `Nuevo pedido Sweet Leaf:%0A${summary}%0ATotal estimado: $${new Intl.NumberFormat(
       "es-AR"
-    ).format(total)}%0AGracias por tu compra.`;
+    ).format(total)}%0APor favor confirmame disponibilidad y envío.`;
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
     window.open(url, "_blank");
     setPurchased(true);

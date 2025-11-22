@@ -7,15 +7,13 @@ import { offers } from "../content/offers";
 import { OfferCard } from "../components/OfferCard";
 import { useCart } from "../context/CartContext";
 import { QuestionForm } from "../components/QuestionForm";
+import { parsePrice } from "../utils/price";
 
 export function Home() {
   const { addItem } = useCart();
 
   const handleAddOffer = (title: string, price: string) => {
-    const numeric = Number(
-      price.replace(/[^0-9,.-]/g, "").replace(/\./g, "").replace(",", ".")
-    );
-    addItem({ id: `offer-${title}`, name: title, price: Number.isFinite(numeric) ? numeric : 0 });
+    addItem({ id: `offer-${title}`, name: title, price: parsePrice(price) });
   };
 
   return (

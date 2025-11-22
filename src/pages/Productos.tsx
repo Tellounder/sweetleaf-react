@@ -2,15 +2,13 @@ import { ProductCard } from "../components/ProductCard";
 import { Section } from "../components/Section";
 import { products } from "../content/products";
 import { useCart } from "../context/CartContext";
+import { parsePrice } from "../utils/price";
 
 export function ProductosPage() {
   const { addItem } = useCart();
 
   const handleAdd = (id: string, name: string, price: string) => {
-    const numeric = Number(
-      price.replace(/[^0-9,.-]/g, "").replace(/\./g, "").replace(",", ".")
-    );
-    addItem({ id, name, price: Number.isFinite(numeric) ? numeric : 0 });
+    addItem({ id, name, price: parsePrice(price) });
   };
 
   return (
