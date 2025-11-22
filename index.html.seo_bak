@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/img/logo.jpeg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Sweet Leaf Río de La Plata ofrece CBD orgánico de alta concentración, línea Pet para mascotas y control de calidad junto a IACA Laboratorios."
+    />
+    <meta name="keywords" content="CBD, Sweet Leaf, cannabidiol, aceite de CBD, línea Pet, IACA Laboratorios, control de calidad, cannabis medicinal" />
+    <meta name="author" content="Sweet Leaf Río de La Plata" />
+    <meta property="og:title" content="Sweet Leaf Río de La Plata | CBD Orgánico" />
+    <meta property="og:description" content="Aceites y cremas con CBD, productos Pet y trazabilidad completa con laboratorio IACA. Calidad cultivada en la región." />
+    <meta property="og:image" content="https://sweetleaf-riodelaplata.web.app/img/logoparalink.png?v=2" />
+    <meta property="og:image:secure_url" content="https://sweetleaf-riodelaplata.web.app/img/logoparalink.png?v=2" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:url" content="https://sweetleaf-riodelaplata.web.app" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sweet Leaf Río de La Plata" />
+    <meta name="twitter:description" content="CBD orgánico, Pet y análisis IACA. Educación, soporte y productos seguros para la región." />
+    <meta name="twitter:image" content="https://sweetleaf-riodelaplata.web.app/img/logoparalink.png?v=2" />
+    <meta name="twitter:site" content="@sweetleaf" />
+    <meta name="theme-color" content="#0c1d11" />
+    <link rel="canonical" href="https://sweetleaf-riodelaplata.web.app" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
+    <title>Sweet Leaf Río de La Plata | CBD Orgánico</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

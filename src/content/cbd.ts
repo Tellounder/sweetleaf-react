@@ -1,0 +1,3 @@
+export const cbdIntro = `El cannabidiol (CBD) es uno de los compuestos no psicoactivos de la planta Cannabis sativa. No contiene THC, por lo que no tiene efectos psicoactivos ni psicotrópicos, y la OMS no lo considera una sustancia adictiva. Se le atribuyen propiedades terapéuticas con potencial para aportar múltiples beneficios para la salud.`;
+
+export const cbdBenefitsDetail = `Los estudios en curso muestran potencial en dolor crónico, fibromialgia, enfermedades inflamatorias autoinmunes, ansiedad, depresión, trastornos neurológicos, estrés postraumático, desórdenes cardiovasculares y afecciones inflamatorias de la piel, entre otros.`;

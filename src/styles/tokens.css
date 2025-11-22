@@ -1,0 +1,24 @@
+:root {
+  /* Colores base */
+  --color-bg-deep: #0f2616;
+  --color-surface: #142f1c;
+  --color-leaf: #1f5731;
+  --color-gold: #d9a441;
+  --color-sand: #f3e3c4;
+  --color-ink: #0b0b0b;
+  --color-muted: #cdd8cc;
+  --color-border: rgba(255, 255, 255, 0.08);
+
+  /* Tipografía */
+  --font-heading: "Sora", "Inter", system-ui, -apple-system, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+
+  /* Dimensiones */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  /* Sombras */
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.14);
+  --shadow-strong: 0 16px 50px rgba(0, 0, 0, 0.25);
+}

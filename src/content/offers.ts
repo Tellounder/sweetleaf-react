@@ -1,0 +1,38 @@
+export const offers = [
+  {
+    id: "aceite20",
+    title: "Aceite CBD 20 ml",
+    description: "Stock mayorista para revender con margen asegurado.",
+    price: "$18.000.-",
+    oldPrice: "$36.000.-",
+    tag: "PVP",
+    bonus: "Incluye material educativo",
+  },
+  {
+    id: "pet10",
+    title: "Aceite Pet 10 ml",
+    description: "Formula para perros y gatos con pipeta dosificadora.",
+    price: "$14.000.-",
+    oldPrice: "$28.000.-",
+    tag: "PVP",
+    bonus: "Guía de uso para veterinarios",
+  },
+  {
+    id: "crema50",
+    title: "Crema 50 cc",
+    description: "Formato ideal para gabinetes y terapias localizadas.",
+    price: "$11.000.-",
+    oldPrice: "$22.000.-",
+    tag: "PVP",
+    bonus: "Display para puntos de venta",
+  },
+  {
+    id: "crema30",
+    title: "Crema 30 cc",
+    description: "Versión compacta para venta directa y kits de inicio.",
+    price: "$8.000.-",
+    oldPrice: "$16.000.-",
+    tag: "PVP",
+    bonus: "Combo con flyers digitales",
+  },
+];
