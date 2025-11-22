@@ -1,73 +1,51 @@
-# React + TypeScript + Vite
+# Sweet Leaf Río de La Plata – Versión 1
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sitio responsive basado en Vite + React + TypeScript para la marca Sweet Leaf. El objetivo es ofrecer una experiencia mobile-first que integre catálogo, beneficios, programas especiales (Pet, IACA) y contacto inmediato por WhatsApp.
 
-Currently, two official plugins are available:
+## Arquitectura
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Vite + React + TypeScript** para un desarrollo rápido y tipado estricto.
+- **React Router** para secciones internas (`/`, `/productos`, `/cbd`, `/pet`, `/iaca`).
+- **Contexto de carrito** (`CartContext`) con modal de checkout y redirección a WhatsApp.
+- **Componentes reutilizables** (`Hero`, `Section`, `HighlightsBar`, `OfferCard`, `ProductCard`…).  
+- **Firebase Hosting** listo para deploy (configuración incluida en `firebase.json`).
 
-## React Compiler
+## Estilos y diseño
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Mobile first con tokens en `src/styles/tokens.css`.
+- Gradientes animados, glows, glassmorphism y microinteracciones.
+- Carrusel superior de “highlights” dependiente de la ruta actual.
+- Mini-header flotante + botón de carrito flotante que acompañan el scroll.
 
-## Expanding the ESLint configuration
+## Rutas principales
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+| Ruta        | Contenido                                                                 |
+|-------------|----------------------------------------------------------------------------|
+| `/`         | Hero principal, carrusel de highlights, secciones Respaldo/Pet/Quienes/Ofertas/Beneficios/IACA. |
+| `/productos`| Catálogo y detalles de logística, pagos y programa mayorista.              |
+| `/cbd`      | Información educativa, beneficios, usos responsables.                      |
+| `/pet`      | Línea mascotas con guía de dosis, FAQs y contacto.                         |
+| `/iaca`     | Información del laboratorio aliado y procesos de control.                  |
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Scripts
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install        # instala dependencias
+npm run dev        # entorno local (Vite)
+npm run build      # build de producción
+npm run preview    # vista previa del build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Flujo para publicar (ejemplo GitHub)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git init
+git add -A
+git commit -m "Version 1"
+git branch -M main
+git remote add origin https://github.com/Tellounder/sweetleaf-react.git
+git push -u origin main
 ```
+
+> Reemplazá la URL del remoto por la que corresponda a tu cuenta.  
+> Para deploy en Firebase: `npm run build` y luego `firebase deploy` (ya configurado).*** End Patch
