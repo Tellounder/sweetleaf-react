@@ -53,7 +53,7 @@ export function PetPage() {
       >
         <div className="pet-layout card">
           <div className="pet-media">
-            <img src="/img/pet.jpeg" alt="Sweet Leaf Pet" loading="lazy" />
+            <img src="/img/pet.webp" alt="Sweet Leaf Pet" loading="lazy" />
           </div>
           <div className="stack">
             <p>

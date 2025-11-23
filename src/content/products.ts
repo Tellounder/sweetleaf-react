@@ -14,7 +14,7 @@ export const products: Product[] = [
     price: "$18.000.-",
     suggested: "$36.000.-",
     description: "Extracto orgánico con dosificador, pensado para rutinas completas.",
-    image: "/img/7.png",
+    image: "/img/7.webp",
   },
   {
     id: "pet10",
@@ -22,7 +22,7 @@ export const products: Product[] = [
     price: "$14.000.-",
     suggested: "$28.000.-",
     description: "Línea Pet para perros y gatos, 8 mg/ml de CBD con pipeta dosificadora.",
-    image: "/img/pet.jpeg",
+    image: "/img/pet.webp",
   },
   {
     id: "crema50",
@@ -30,7 +30,7 @@ export const products: Product[] = [
     price: "$11.000.-",
     suggested: "$22.000.-",
     description: "Presentación de 50 cc para tratamientos tópicos y musculares.",
-    image: "/img/6.png",
+    image: "/img/6.webp",
   },
   {
     id: "crema30",
@@ -38,6 +38,6 @@ export const products: Product[] = [
     price: "$8.000.-",
     suggested: "$16.000.-",
     description: "Formato compacto para uso diario en zonas localizadas.",
-    image: "/img/6.png",
+    image: "/img/6.webp",
   },
 ];
