@@ -627,11 +627,6 @@ export function AdminPage() {
         </div>
       </div>
 
-      <AdminMobileDock
-        onGoTop={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        onRefresh={refresh}
-        disabled={!apiReady}
-      />
     </div>
   );
 }
@@ -735,31 +730,5 @@ function AdminAccordion({
       </header>
       {isOpen && <div className="admin-accordion-body">{children}</div>}
     </section>
-  );
-}
-
-function AdminMobileDock({
-  onGoTop,
-  onRefresh,
-  disabled,
-}: {
-  onGoTop: () => void;
-  onRefresh: () => void;
-  disabled?: boolean;
-}) {
-  return (
-    <div className="admin-mobile-dock">
-      <button type="button" className="admin-mobile-btn ghost" onClick={onGoTop}>
-        Volver arriba
-      </button>
-      <button
-        type="button"
-        className="admin-mobile-btn primary"
-        onClick={onRefresh}
-        disabled={disabled}
-      >
-        Sincronizar
-      </button>
-    </div>
   );
 }

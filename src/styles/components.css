@@ -4,6 +4,18 @@
   overflow-x: hidden;
 }
 
+.admin-site-shell {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #1c1f2b, #05060a 50%);
+  color: #f4f6f8;
+}
+
+.admin-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(24px, 4vw, 48px) clamp(16px, 4vw, 48px) 80px;
+}
+
 .header-bar {
   position: sticky;
   top: 0;
@@ -1327,46 +1339,6 @@ ease;
   gap: 32px;
 }
 
-.admin-mobile-dock {
-  position: sticky;
-  bottom: 12px;
-  display: none;
-  gap: 12px;
-  padding: 14px;
-  margin-top: 16px;
-  border-radius: 18px;
-  background: rgba(6, 14, 9, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.35);
-  z-index: 15;
-}
-
-.admin-mobile-btn {
-  flex: 1;
-  padding: 0.85rem 1rem;
-  border-radius: 14px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  border: 1px solid transparent;
-}
-
-.admin-mobile-btn.ghost {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.admin-mobile-btn.primary {
-  background: linear-gradient(120deg, #f7b84a, #e48b17);
-  color: #041305;
-  border: none;
-}
-
-.admin-mobile-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
 
 .admin-anchor-list {
   display: flex;

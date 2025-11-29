@@ -8,6 +8,16 @@ export function Layout() {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith("/admin");
 
+  if (isAdmin) {
+    return (
+      <div className="admin-site-shell">
+        <main className="admin-page">
+          <Outlet />
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="site-shell">
       <Header />
@@ -15,7 +25,7 @@ export function Layout() {
       <main className="page">
         <Outlet />
       </main>
-      {!isAdmin && <FloatingCart />}
+      <FloatingCart />
       <Footer />
     </div>
   );
