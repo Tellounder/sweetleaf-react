@@ -1,71 +1,42 @@
 import { Section } from "../components/Section";
 import { FeatureCard } from "../components/FeatureCard";
 import { QuestionForm } from "../components/QuestionForm";
-
-const petBenefits = [
-  {
-    title: "Bienestar articular",
-    description:
-      "Reduce inflamación en caderas, columna y articulaciones, ideal para mascotas senior o con displasia.",
-  },
-  {
-    title: "Gestión del ánimo",
-    description:
-      "Disminuye la ansiedad por separación y modula respuestas ante ruidos o viajes.",
-  },
-  {
-    title: "Apoyo neurológico",
-    description:
-      "Casos de epilepsia idiopática muestran menor frecuencia de convulsiones bajo supervisión veterinaria.",
-  },
-];
-
-const doseGuide = [
-  { weight: "Hasta 5 kg", dose: "1-2 gotas cada 12 h" },
-  { weight: "5 a 15 kg", dose: "3-4 gotas cada 12 h" },
-  { weight: "> 15 kg", dose: "5-8 gotas cada 12 h" },
-];
-
-const petFaqs = [
-  {
-    title: "¿Cuándo veo resultados?",
-    text: "En dolores agudos se percibe en minutos; en cuadros crónicos recomendamos sostener 10 a 14 días.",
-  },
-  {
-    title: "¿Pueden tomarlo gatos?",
-    text: "Sí. Ajustamos con pipeta milimetrada y monitoreamos cambios en apetito y ánimo.",
-  },
-  {
-    title: "¿Necesito receta?",
-    text: "No es obligatoria, pero trabajamos con veterinarios aliados para acompañar cada caso clínico.",
-  },
-];
+import { useDesignBlocks } from "../context/DesignContentContext";
 
 export function PetPage() {
+  const { blocks } = useDesignBlocks();
+  const petBlock = blocks["section.pet"];
+  const showPet = petBlock.__meta.isPublished;
+
+  if (!showPet) {
+    return null;
+  }
+
   return (
     <>
       <Section
-        kicker="Mascotas"
-        title="Sweet Leaf Pet"
-        subtitle="Aceite de CBD full spectrum 8 mg/ml con pipeta dosificadora, pensado para perros y gatos."
+        kicker={petBlock.hero.kicker}
+        title={petBlock.hero.title}
+        subtitle={petBlock.hero.subtitle}
         variant="pet"
         id="pet-inicio"
       >
         <div className="pet-layout card">
           <div className="pet-media">
-            <img src="/img/pet.webp" alt="Sweet Leaf Pet" loading="lazy" />
+            <img
+              src={petBlock.hero.image}
+              alt={petBlock.hero.title}
+              loading="lazy"
+            />
           </div>
           <div className="stack">
-            <p>
-              Trabajamos fórmulas específicas libres de transgénicos, gluten y azúcares. Cada lote se
-              controla para asegurar potencia constante y ausencia de pesticidas.
-            </p>
+            <p>{petBlock.hero.description}</p>
             <ul className="pet-benefits">
-              <li>Alivio de dolores crónicos y procesos inflamatorios.</li>
-              <li>Modulación de estrés, agresividad o hipersensibilidad.</li>
-              <li>Soporte en epilepsia idiopática y recuperación post quirúrgica.</li>
+              {petBlock.hero.bulletPoints.map((point, index) => (
+                <li key={`pet-hero-point-${index}`}>{point}</li>
+              ))}
             </ul>
-            <div className="pill">Incluye guía de uso personalizada</div>
+            <div className="pill">{petBlock.hero.pill}</div>
           </div>
         </div>
       </Section>
@@ -76,7 +47,7 @@ export function PetPage() {
         id="beneficios-pet"
       >
         <div className="grid scrollable-x">
-          {petBenefits.map((benefit) => (
+          {petBlock.benefits.map((benefit) => (
             <FeatureCard key={benefit.title} {...benefit} />
           ))}
         </div>
@@ -97,7 +68,7 @@ export function PetPage() {
               </tr>
             </thead>
             <tbody>
-              {doseGuide.map((row) => (
+              {petBlock.doseGuide.map((row) => (
                 <tr key={row.weight}>
                   <td>{row.weight}</td>
                   <td>{row.dose}</td>
@@ -105,16 +76,13 @@ export function PetPage() {
               ))}
             </tbody>
           </table>
-          <p className="muted">
-            Administrar directamente en la boca o sobre alimento húmedo. Incrementar gradualmente 1 gota
-            por semana si no se observa respuesta.
-          </p>
+          <p className="muted">{petBlock.doseNote}</p>
         </div>
       </Section>
 
       <Section kicker="FAQs" title="Preguntas frecuentes" id="faq-pet">
         <div className="grid">
-          {petFaqs.map((faq) => (
+          {petBlock.faqs.map((faq) => (
             <div key={faq.title} className="card stack">
               <h3>{faq.title}</h3>
               <p className="muted">{faq.text}</p>
@@ -124,9 +92,9 @@ export function PetPage() {
       </Section>
 
       <Section
-        kicker="Contacto"
-        title="Asesoramiento inmediato"
-        subtitle="Te ayudamos a definir dosis y seguimiento con nuestro equipo veterinario aliado."
+        kicker={petBlock.contact.kicker}
+        title={petBlock.contact.title}
+        subtitle={petBlock.contact.subtitle}
         id="contacto-pet"
         variant="contact"
       >

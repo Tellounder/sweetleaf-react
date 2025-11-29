@@ -1,14 +1,22 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import { useDesignBlocks } from "../context/DesignContentContext";
 
-const menuLinks = [
-  { to: "/", label: "Inicio" },
-  { to: "#quienes", label: "Nosotros" },
-  { to: "/productos", label: "Tienda" },
-  { to: "#contacto", label: "Contacto" },
-];
+type LinkType = "route" | "anchor" | "external";
+
+function resolveLinkType(href: string, explicit?: LinkType) {
+  if (explicit) return explicit;
+  if (href.startsWith("/")) return "route";
+  if (href.startsWith("http")) return "external";
+  return "anchor";
+}
+
+const DEFAULT_HEADER_BG = "/img/principal.webp";
 
 export function Header() {
+  const location = useLocation();
+  const { blocks } = useDesignBlocks();
+  const headerContent = blocks["header.main"];
   const [open, setOpen] = useState(false);
   const [compactBar, setCompactBar] = useState(false);
   const [scrollThreshold, setScrollThreshold] = useState(260);
@@ -48,39 +56,128 @@ export function Header() {
     syncThreshold();
   }, [open, syncThreshold]);
 
-  const whatsappLink =
-    "https://wa.me/541127975134?text=Hola%20Sweet%20Leaf%20R%C3%ADo%20de%20La%20Plata,%20quiero%20realizar%20una%20consulta.";
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const headerDisplay = headerContent.display ?? true;
+  const showHeader = headerContent.__meta.isPublished && headerDisplay;
+
+  if (!showHeader) {
+    return null;
+  }
+
+  const navLinks = headerContent.navLinks ?? [];
+  const miniLinks = headerContent.miniLinks ?? [];
+  const whatsappLink = headerContent.whatsappLink;
+  const backgroundImage = useMemo(() => {
+    const showSystem = headerContent.useSystemBackground ?? true;
+    if (!showSystem) {
+      return headerContent.backgroundImage || undefined;
+    }
+    return headerContent.backgroundImage ?? DEFAULT_HEADER_BG;
+  }, [headerContent.backgroundImage, headerContent.useSystemBackground]);
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
+  const renderNavLink = (link: (typeof navLinks)[number], context: string) => {
+    const type = resolveLinkType(link.href, link.type);
+    const key = `${context}-${link.label}`;
+    if (type === "route") {
+      return (
+        <NavLink
+          key={key}
+          to={link.href}
+          className={({ isActive }) => (isActive ? "active" : undefined)}
+          onClick={() => setOpen(false)}
+        >
+          {link.label}
+        </NavLink>
+      );
+    }
+    return (
+      <a
+        key={key}
+        href={link.href}
+        target={type === "external" ? "_blank" : undefined}
+        rel={type === "external" ? "noreferrer" : undefined}
+        onClick={() => setOpen(false)}
+      >
+        {link.label}
+      </a>
+    );
+  };
+
+  const renderMiniLink = (link: (typeof miniLinks)[number], index: number) => {
+    const type = resolveLinkType(link.href, link.type);
+    const content = (
+      <>
+        {link.icon && <i className={`fa-solid ${link.icon}`} aria-hidden />}
+        <span>{link.label}</span>
+      </>
+    );
+
+    if (link.behavior === "scrollTop") {
+      return (
+        <button
+          key={`mini-${index}`}
+          type="button"
+          className="mini-link"
+          onClick={() => {
+            scrollToTop();
+            setOpen(false);
+          }}
+        >
+          {content}
+        </button>
+      );
+    }
+
+    if (type === "route") {
+      return (
+        <NavLink
+          key={`mini-${index}`}
+          to={link.href}
+          className="mini-link"
+          onClick={() => setOpen(false)}
+        >
+          {content}
+        </NavLink>
+      );
+    }
+
+    return (
+      <a
+        key={`mini-${index}`}
+        className="mini-link"
+        href={link.href}
+        target={type === "external" ? "_blank" : undefined}
+        rel={type === "external" ? "noreferrer" : undefined}
+        onClick={() => setOpen(false)}
+      >
+        {content}
+      </a>
+    );
+  };
 
   return (
     <>
-      <header ref={headerRef} className={`header-bar ${open ? "is-open" : ""}`}>
+      <header
+        ref={headerRef}
+        className={`header-bar ${open ? "is-open" : ""}`}
+        style={
+          backgroundImage
+            ? { backgroundImage: `url(${backgroundImage})` }
+            : { backgroundImage: "none" }
+        }
+      >
         <div className="header-inner container">
           <a className="brand" href="/">
-            <span className="brand-title">Sweet Leaf</span>
-            <small>Río de La Plata</small>
-          </a>
-          <nav className="primary-nav" aria-label="Secciones principales">
-            {menuLinks.map((link) =>
-              link.to.startsWith("#") ? (
-                <a key={link.label} href={link.to}>
-                  {link.label}
-                </a>
-              ) : (
-                <NavLink
-                  key={link.to}
-                  to={link.to}
-                  className={({ isActive }) => (isActive ? "active" : undefined)}
-                >
-                  {link.label}
-                </NavLink>
-              )
+            <span className="brand-title">{headerContent.brandTitle}</span>
+            {headerContent.brandSubtitle && (
+              <small>{headerContent.brandSubtitle}</small>
             )}
-          </nav>
+          </a>
+          
           <div className="header-actions">
             <button
               className="hamburger"
@@ -96,58 +193,30 @@ export function Header() {
       <div className={`nav-shell ${open ? "is-open" : ""}`}>
         <div className="container">
           <nav className="nav-menu" aria-label="Menú principal">
-            {menuLinks.map((link) =>
-              link.to.startsWith("#") ? (
-                <a
-                  key={`drawer-${link.label}`}
-                  href={link.to}
-                  onClick={() => setOpen(false)}
-                >
-                  {link.label}
-                </a>
-              ) : (
-                <NavLink
-                  key={`drawer-${link.to}`}
-                  to={link.to}
-                  className={({ isActive }) => (isActive ? "active" : undefined)}
-                  onClick={() => setOpen(false)}
-                >
-                  {link.label}
-                </NavLink>
-              )
-            )}
+            {navLinks.map((link) => renderNavLink(link, "drawer"))}
           </nav>
         </div>
       </div>
-      <div
-        className={`mini-header ${
-          compactBar && !open ? "is-visible" : ""
-        }`}
-      >
-        <div className="mini-actions">
-          <button type="button" className="mini-link" onClick={scrollToTop}>
-            <i className="fa-solid fa-house" aria-hidden />
-            <span>Inicio</span>
-          </button>
-          <NavLink to="/productos" className="mini-link">
-            <i className="fa-solid fa-store" aria-hidden />
-            <span>Tienda</span>
-          </NavLink>
-          <a className="mini-link" href="#contacto">
-            <i className="fa-solid fa-envelope" aria-hidden />
-            <span>Contacto</span>
+      {!isAdminRoute && (
+        <div
+          className={`mini-header ${
+            compactBar && !open ? "is-visible" : ""
+          }`}
+        >
+          <div className="mini-actions">
+            {miniLinks.map((link, index) => renderMiniLink(link, index))}
+          </div>
+          <a
+            className="mini-cta"
+            href={whatsappLink}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <i className="fa-brands fa-whatsapp" aria-hidden />
+            <span>WhatsApp</span>
           </a>
         </div>
-        <a
-          className="mini-cta"
-          href={whatsappLink}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <i className="fa-brands fa-whatsapp" aria-hidden />
-          <span>WhatsApp</span>
-        </a>
-      </div>
+      )}
     </>
   );
 }

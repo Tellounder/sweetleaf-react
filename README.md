@@ -34,7 +34,25 @@ npm install        # instala dependencias
 npm run dev        # entorno local (Vite)
 npm run build      # build de producción
 npm run preview    # vista previa del build
+npm run sync:design # sube el fallback actual al CMS (usa API key del admin)
 ```
+
+`npm run sync:design` lee `src/content/designFallback.ts`, llama al backend (`VITE_API_BASE_URL`) y crea/publica cada bloque con la API key definida en `.env.local` (`SYNC_API_KEY` o `API_KEY`). Ideal para inicializar una base nueva antes de entrar al admin.
+
+## Variables de entorno clave
+
+Crear un archivo `.env.local` (ya contemplado en el repo) con las credenciales de Supabase que permiten subir assets desde el constructor `/admin`:
+
+```
+VITE_SUPABASE_URL=https://xdghzptxuapxlwviwgxi.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkZ2h6cHR4dWFweGx3dml3Z3hpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQyNDExMjMsImV4cCI6MjA3OTgxNzEyM30.bhXw2lk-f1ZDw1zJoMBZ-j-AjBjmd5MfNZXh25nIEKE
+VITE_SUPABASE_BUCKET=sweetleaf-assets
+VITE_API_BASE_URL=http://localhost:3000/api
+# opcional para npm run sync:design
+SYNC_API_KEY=local-dev-api-key
+```
+
+> Recordá crear el bucket `sweetleaf-assets` en Supabase Storage (o ajustar el nombre en las variables) y usar la **service_role** en el backend Nest.
 
 ## Flujo para publicar (ejemplo GitHub)
 

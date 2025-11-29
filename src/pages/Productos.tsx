@@ -1,11 +1,24 @@
 import { ProductCard } from "../components/ProductCard";
 import { Section } from "../components/Section";
-import { products } from "../content/products";
 import { useCart } from "../context/CartContext";
 import { parsePrice } from "../utils/price";
+import { useDesignBlocks } from "../context/DesignContentContext";
 
 export function ProductosPage() {
   const { addItem } = useCart();
+  const { blocks } = useDesignBlocks();
+  const catalogBlock = blocks["catalog.products"];
+  const logisticsBlock = blocks["section.logistics"];
+  const paymentsBlock = blocks["section.payments"];
+  const wholesaleBlock = blocks["section.wholesale"];
+  const showCatalog =
+    (catalogBlock.display ?? true) && catalogBlock.__meta.isPublished;
+  const showLogistics =
+    (logisticsBlock.display ?? true) && logisticsBlock.__meta.isPublished;
+  const showPayments =
+    (paymentsBlock.display ?? true) && paymentsBlock.__meta.isPublished;
+  const showWholesale =
+    (wholesaleBlock.display ?? true) && wholesaleBlock.__meta.isPublished;
 
   const handleAdd = (id: string, name: string, price: string) => {
     addItem({ id, name, price: parsePrice(price) });
@@ -13,76 +26,75 @@ export function ProductosPage() {
 
   return (
     <>
-      <Section
-        kicker="Catálogo"
-        title="Productos 100% naturales"
-        subtitle="CBD orgánico de máxima concentración, formulado para bienestar cotidiano."
-        variant="catalogo"
-        id="productos"
-      >
-        <div className="grid">
-          {products.map((product) => (
-            <ProductCard key={product.id} {...product} onAdd={handleAdd} />
-          ))}
-        </div>
-      </Section>
-
-      <Section
-        kicker="Logística"
-        title="Envíos en 24 horas a todo el país"
-        subtitle="Despachamos en 24 horas por correo o transporte, con embalaje cuidado para que llegue perfecto."
-        id="envios"
-      >
-        <div className="card stack">
-          <ul className="muted">
-            <li>Envíos express en CABA y GBA en menos de 12 horas.</li>
-            <li>Interior del país con tracking en tiempo real y seguro incluido.</li>
-            <li>Pick-up concertado para profesionales o ventas mayoristas.</li>
-          </ul>
-          <div className="pill">Seguimiento automático • Embalaje discreto</div>
-        </div>
-      </Section>
-
-      <Section
-        kicker="Pagos"
-        title="Cuotas y medios disponibles"
-        subtitle="Elegí el medio que mejor se adapte: tarjetas, transferencias o links de pago."
-        id="pagos"
-      >
-        <div className="grid">
-          <div className="card stack">
-            <h3>Tarjetas</h3>
-            <p className="muted">Hasta 3 cuotas sin interés en bancos seleccionados.</p>
+      {showCatalog && (
+        <Section
+          kicker={catalogBlock.kicker}
+          title={catalogBlock.title}
+          subtitle={catalogBlock.subtitle}
+          variant="catalogo"
+          id="productos"
+        >
+          <div className="grid">
+            {catalogBlock.products.map((product) => (
+              <ProductCard key={product.id} {...product} onAdd={handleAdd} />
+            ))}
           </div>
-          <div className="card stack">
-            <h3>Transferencia</h3>
-            <p className="muted">5% off abonando por transferencia o cuenta DNI.</p>
-          </div>
-          <div className="card stack">
-            <h3>Links de pago</h3>
-            <p className="muted">Enviamos link directo y factura digital.</p>
-          </div>
-        </div>
-      </Section>
+        </Section>
+      )}
 
-      <Section
-        kicker="Profesionales"
-        title="Programa mayorista"
-        subtitle="Acompañamos a clínicas, terapeutas y distribuidores con stock asegurado."
-        id="mayoristas"
-      >
-        <div className="card stack">
-          <p>
-            Packs desde 12 unidades, fichas técnicas personalizadas y soporte para onboarding de
-            pacientes.
-          </p>
-          <ul className="muted">
-            <li>Listados exclusivos con márgenes sugeridos.</li>
-            <li>Entrega escalonada o almacenaje sin costo.</li>
-            <li>Acompañamiento comercial y materiales de marca.</li>
-          </ul>
-        </div>
-      </Section>
+      {showLogistics && (
+        <Section
+          kicker={logisticsBlock.kicker}
+          title={logisticsBlock.title}
+          subtitle={logisticsBlock.subtitle}
+          id="envios"
+        >
+          <div className="card stack">
+            <ul className="muted">
+              {logisticsBlock.bullets.map((item, idx) => (
+                <li key={`logistic-${idx}`}>{item}</li>
+              ))}
+            </ul>
+            <div className="pill">{logisticsBlock.pill}</div>
+          </div>
+        </Section>
+      )}
+
+      {showPayments && (
+        <Section
+          kicker={paymentsBlock.kicker}
+          title={paymentsBlock.title}
+          subtitle={paymentsBlock.subtitle}
+          id="pagos"
+        >
+          <div className="grid">
+            {paymentsBlock.options.map((option) => (
+              <div key={option.title} className="card stack">
+                <h3>{option.title}</h3>
+                <p className="muted">{option.description}</p>
+              </div>
+            ))}
+          </div>
+        </Section>
+      )}
+
+      {showWholesale && (
+        <Section
+          kicker={wholesaleBlock.kicker}
+          title={wholesaleBlock.title}
+          subtitle={wholesaleBlock.subtitle}
+          id="mayoristas"
+        >
+          <div className="card stack">
+            <p>{wholesaleBlock.paragraph}</p>
+            <ul className="muted">
+              {wholesaleBlock.bullets.map((item, idx) => (
+                <li key={`wholesale-${idx}`}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </Section>
+      )}
     </>
   );
 }

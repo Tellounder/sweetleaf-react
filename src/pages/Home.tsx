@@ -1,16 +1,46 @@
 import { Hero } from "../components/Hero";
 import { Section } from "../components/Section";
 import { FeatureCard } from "../components/FeatureCard";
-import { aboutText } from "../content/about";
-import { benefits } from "../content/benefits";
-import { offers } from "../content/offers";
 import { OfferCard } from "../components/OfferCard";
 import { useCart } from "../context/CartContext";
 import { QuestionForm } from "../components/QuestionForm";
 import { parsePrice } from "../utils/price";
+import { useDesignBlocks } from "../context/DesignContentContext";
+import { buildHeroImages } from "../utils/heroImages";
 
 export function Home() {
   const { addItem } = useCart();
+  const { blocks } = useDesignBlocks();
+  const heroContent = blocks["hero.home"];
+  const heroDisplay = heroContent.display ?? true;
+  const showHero = heroContent.__meta.isPublished && heroDisplay;
+  const heroImages = buildHeroImages({
+    systemImages: heroContent.backgroundImages,
+    customImages: heroContent.customImages,
+    useSystemImages: heroContent.useSystemImages,
+    maxImages: heroContent.maxImages,
+  });
+  const respaldoBlock = blocks["section.respaldo"];
+  const homePetBlock = blocks["home.pet"];
+  const showHomePet =
+    (homePetBlock.display ?? true) && homePetBlock.__meta.isPublished;
+  const homeAboutBlock = blocks["home.about"];
+  const showHomeAbout =
+    (homeAboutBlock.display ?? true) && homeAboutBlock.__meta.isPublished;
+  const homeOffersBlock = blocks["home.offers"];
+  const showHomeOffers =
+    (homeOffersBlock.display ?? true) && homeOffersBlock.__meta.isPublished;
+  const homeBenefitsBlock = blocks["home.benefits"];
+  const showHomeBenefits =
+    (homeBenefitsBlock.display ?? true) && homeBenefitsBlock.__meta.isPublished;
+  const homeIacaBlock = blocks["home.iaca"];
+  const showHomeIaca =
+    (homeIacaBlock.display ?? true) && homeIacaBlock.__meta.isPublished;
+  const homeContactBlock = blocks["home.contact"];
+  const showHomeContact =
+    (homeContactBlock.display ?? true) && homeContactBlock.__meta.isPublished;
+  const showRespaldo =
+    (respaldoBlock.display ?? true) && respaldoBlock.__meta.isPublished;
 
   const handleAddOffer = (title: string, price: string) => {
     addItem({ id: `offer-${title}`, name: title, price: parsePrice(price) });
@@ -18,175 +48,160 @@ export function Home() {
 
   return (
     <>
+      {showHero && (
+        <Hero
+          kicker={heroContent.kicker}
+          title={heroContent.title}
+          subtitle={heroContent.subtitle}
+          ctaPrimary={heroContent.ctaPrimary}
+          ctaSecondary={heroContent.ctaSecondary}
+          backgroundImages={heroImages.length ? heroImages : heroContent.backgroundImages}
+        />
+      )}
 
-      <Hero
-        kicker="Orgánico y no psicoactivo"
-        title="CBD de alta concentración diseñado en la región"
-        subtitle="Aceites y cremas elaborados con estándares de laboratorio, trazabilidad total y cultivos ecológicos de Argentina y Uruguay."
-        ctaPrimary={{ label: "Ver productos", href: "/productos" }}
-        ctaSecondary={{ label: "Saber sobre CBD", href: "/cbd" }}
-      />
+      {showRespaldo && (
+        <Section
+          kicker={respaldoBlock.kicker}
+          title={respaldoBlock.title}
+          subtitle={respaldoBlock.subtitle}
+          id="respaldo"
+          variant="respaldo"
+        >
+          <div className="stat-bar">
+            {respaldoBlock.stats.map((stat) => (
+              <div className="stat" key={`${stat.label}-${stat.value}`}>
+                <span className="label">{stat.label}</span>
+                <span className="value">{stat.value}</span>
+              </div>
+            ))}
+          </div>
+        </Section>
+      )}
 
-      <Section
-        kicker="Respaldo"
-        title="Calidad que se siente y se comprueba"
-        subtitle="Cuidamos la cadena completa: cultivo, extracción, testeo y empaque. Todo medido para entregarte un CBD estable y sin sorpresas."
-        id="respaldo"
-        variant="respaldo"
-      >
-        <div className="stat-bar">
-          <div className="stat">
-            <span className="label">Años de experiencia</span>
-            <span className="value">10+</span>
-          </div>
-          <div className="stat">
-            <span className="label">Tests por lote</span>
-            <span className="value">3</span>
-          </div>
-          <div className="stat">
-            <span className="label">THC</span>
-            <span className="value">0%</span>
-          </div>
-          <div className="stat">
-            <span className="label">Origen</span>
-            <span className="value">AR / UY</span>
-          </div>
-        </div>
-      </Section>
-
-      <Section
-        kicker="Mascotas"
-        title="Sweet Leaf Pet"
-        subtitle="Aceite específico para perros y gatos con 8 mg/ml de CBD, dosificador y respaldo veterinario."
-        id="pet"
-        variant="pet"
-      >
-        <div className="pet-layout card">
-          <div className="pet-media">
-            <img src="/img/pet.webp" alt="Sweet Leaf Pet" loading="lazy" />
-          </div>
-          <div className="stack">
-            <p>
-              Nuestra línea Pet acompaña a mascotas con dolores crónicos,
-              trastornos emocionales y cuadros de epilepsia idiopática. El
-              extracto, libre de transgénicos, gluten, azúcares y pesticidas,
-              se formula para entregar una experiencia calmante y segura.
-            </p>
-            <ul className="pet-benefits">
-              <li>Alivio en articulaciones y huesos doloridos</li>
-              <li>Control de irritabilidad y agresividad en gatos</li>
-              <li>Disminución de frecuencia e intensidad de convulsiones</li>
-              <li>Reducción de procesos inflamatorios (artritis, IBD)</li>
-              <li>Apoyo en situaciones de estrés o ansiedad</li>
-            </ul>
-            <div className="pill">100% natural y dosificación precisa</div>
-          </div>
-        </div>
-      </Section>
-
-      <Section
-        kicker="Quiénes somos"
-        title="Sweet Leaf Río de La Plata"
-        subtitle="Productos honestos, procesos cuidados y educación responsable sobre el impacto medicinal del cannabis."
-        id="quienes"
-        variant="about"
-      >
-        <div className="card stack">
-          <p>{aboutText}</p>
-          <div className="pill" aria-hidden>
-            Calidad asegurada • No psicoactivos
-          </div>
-        </div>
-      </Section>
-
-      <Section
-        kicker="Ofertas activas"
-        title="Si estás listo, hoy hay bonus"
-        subtitle="Combos pensados para iniciar o mejorar tu rutina con envío y extras incluidos."
-        id="ofertas"
-        variant="offers"
-      >
-        <div className="grid scrollable-x">
-          {offers.map((offer) => (
-            <OfferCard key={offer.id} {...offer} onAdd={handleAddOffer} />
-          ))}
-        </div>
-      </Section>
-
-      <Section
-        kicker="Beneficios"
-        title="El CBD que te acompaña en tu rutina"
-        subtitle="Propiedades significativas respaldadas por evidencia emergente y una comunidad creciente de usuarios."
-        id="beneficios"
-        variant="benefits"
-      >
-        <div className="grid scrollable-x">
-          {benefits.map((item) => (
-            <FeatureCard
-              key={item.title}
-              title={item.title}
-              description={item.description}
-            />
-          ))}
-        </div>
-      </Section>
-
-      <Section
-        kicker="Calidad certificada"
-        title="IACA Laboratorios"
-        subtitle="Trabajamos junto a uno de los primeros laboratorios autorizados del país para controlar aceites, extractos y flores de cannabis."
-        id="iaca"
-        variant="iaca"
-      >
-        <div className="card stack">
-          <p>
-            El equipo de IACA valida cada lote con métodos HPLC para conocer con
-            precisión la presencia de cannabinoides y asegurar un uso terapéutico
-            efectivo. Además, ofrece controles microbiológicos, metales pesados
-            y perfiles de terpenos para brindarte trazabilidad completa.
-          </p>
-          <div className="iaca-grid">
-            <div className="iaca-block">
-              <h3>Cuantificación de cannabinoides</h3>
-              <p className="muted">
-                THC, THCA, CBD, CBDA y CBN mediante HPLC para aceites y extractos.
-              </p>
+      {showHomePet && (
+        <Section
+          kicker={homePetBlock.hero.kicker}
+          title={homePetBlock.hero.title}
+          subtitle={homePetBlock.hero.subtitle}
+          id="pet"
+          variant="pet"
+        >
+          <div className="pet-layout card">
+            <div className="pet-media">
+              <img
+                src={homePetBlock.hero.image}
+                alt={homePetBlock.hero.title}
+                loading="lazy"
+              />
             </div>
-            <div className="iaca-block">
-              <h3>Análisis microbiológico</h3>
-              <ul>
-                <li>Bacterias aerobias y enterobacterias</li>
-                <li>Hongos y levaduras</li>
-                <li>Salmonella, Listeria, E. Coli</li>
+            <div className="stack">
+              <p>{homePetBlock.hero.description}</p>
+              <ul className="pet-benefits">
+                {homePetBlock.hero.bulletPoints.map((point, index) => (
+                  <li key={`home-pet-point-${index}`}>{point}</li>
+                ))}
               </ul>
-            </div>
-            <div className="iaca-block">
-              <h3>Metales pesados</h3>
-              <ul>
-                <li>Arsénico y Plomo</li>
-                <li>Cadmio y Mercurio</li>
-              </ul>
-            </div>
-            <div className="iaca-block">
-              <h3>Perfil de terpenos</h3>
-              <p className="muted">
-                Determinación cromatográfica en flores secas para conocer el
-                impacto aromático y terapéutico de cada variedad.
-              </p>
+              <div className="pill">{homePetBlock.hero.pill}</div>
             </div>
           </div>
-        </div>
-      </Section>
+        </Section>
+      )}
 
-      <Section
-        kicker="Consultas"
-        title="Hablemos por WhatsApp"
-        subtitle="Contanos tus dudas o qué buscás. Sumamos tu carrito en el mensaje para agilizar la respuesta."
-        id="contacto"
-        variant="contact"
-      >
-        <QuestionForm />
-      </Section>
+      {showHomeAbout && (
+        <Section
+          kicker={homeAboutBlock.kicker}
+          title={homeAboutBlock.title}
+          subtitle={homeAboutBlock.subtitle}
+          id="quienes"
+          variant="about"
+        >
+          <div className="card stack">
+            <p>{homeAboutBlock.text}</p>
+            <div className="pill" aria-hidden>
+              {homeAboutBlock.pill}
+            </div>
+          </div>
+        </Section>
+      )}
+
+      {showHomeOffers && (
+        <Section
+          kicker={homeOffersBlock.kicker}
+          title={homeOffersBlock.title}
+          subtitle={homeOffersBlock.subtitle}
+          id="ofertas"
+          variant="offers"
+        >
+          <div className="grid scrollable-x">
+            {homeOffersBlock.offers.map((offer) => (
+              <OfferCard key={offer.id} {...offer} onAdd={handleAddOffer} />
+            ))}
+          </div>
+        </Section>
+      )}
+
+      {showHomeBenefits && (
+        <Section
+          kicker={homeBenefitsBlock.kicker}
+          title={homeBenefitsBlock.title}
+          subtitle={homeBenefitsBlock.subtitle}
+          id="beneficios"
+          variant="benefits"
+        >
+          <div className="grid scrollable-x">
+            {homeBenefitsBlock.benefits.map((item) => (
+              <FeatureCard
+                key={item.title}
+                title={item.title}
+                description={item.description}
+              />
+            ))}
+          </div>
+        </Section>
+      )}
+
+      {showHomeIaca && (
+        <Section
+          kicker={homeIacaBlock.kicker}
+          title={homeIacaBlock.title}
+          subtitle={homeIacaBlock.subtitle}
+          id="iaca"
+          variant="iaca"
+        >
+          <div className="card stack">
+            <p>{homeIacaBlock.intro}</p>
+            <div className="iaca-grid">
+              {homeIacaBlock.blocks.map((block, index) => (
+                <div className="iaca-block" key={`iaca-block-${index}`}>
+                  <h3>{block.title}</h3>
+                  {block.description && (
+                    <p className="muted">{block.description}</p>
+                  )}
+                  {block.bullets && (
+                    <ul>
+                      {block.bullets.map((item, idx) => (
+                        <li key={`iaca-${index}-bullet-${idx}`}>{item}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </Section>
+      )}
+
+      {showHomeContact && (
+        <Section
+          kicker={homeContactBlock.kicker}
+          title={homeContactBlock.title}
+          subtitle={homeContactBlock.subtitle}
+          id="contacto"
+          variant="contact"
+        >
+          <QuestionForm />
+        </Section>
+      )}
     </>
   );
 }
